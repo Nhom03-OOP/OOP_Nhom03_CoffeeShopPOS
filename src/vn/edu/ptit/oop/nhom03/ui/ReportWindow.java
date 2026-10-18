@@ -19,12 +19,6 @@ import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.List;
 
-/**
- * Cửa sổ báo cáo: bảng đơn hàng + 3 biểu đồ.
- * - Lọc theo ngày (dùng SalesRepository.findByDate).
- * - Nút "Làm mới" dựng lại toàn bộ tab từ dữ liệu mới nhất.
- * - Không đặt ChartTheme ở đây (Main lo việc này).
- */
 public class ReportWindow extends JFrame {
 
     private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
