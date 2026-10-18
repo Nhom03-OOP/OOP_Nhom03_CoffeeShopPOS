@@ -1,13 +1,13 @@
 package vn.edu.ptit.oop.nhom05.ui;
 
 
-import vn.edu.ptit.oop.nhom05.model.CafeTable;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.*;
+import vn.edu.ptit.oop.nhom05.model.CafeTable;
 
 public class TablePanel extends JPanel {
     private List<CafeTable> tables;
