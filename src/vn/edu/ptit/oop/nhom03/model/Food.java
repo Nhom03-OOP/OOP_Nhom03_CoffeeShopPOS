@@ -1,4 +1,4 @@
-package vn.edu.ptit.oop.nhom05.model;
+package vn.edu.ptit.oop.nhom03.model;
 
 public class Food extends MenuItem {
 

@@ -1,12 +1,12 @@
-package vn.edu.ptit.oop.nhom05.repository;
+package vn.edu.ptit.oop.nhom03.repository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import vn.edu.ptit.oop.nhom05.model.Order;
-import vn.edu.ptit.oop.nhom05.model.OrderStatus;
+import vn.edu.ptit.oop.nhom03.model.Order;
+import vn.edu.ptit.oop.nhom03.model.OrderStatus;
 
 /**
  * Lưu các đơn đã thanh toán thành công (trong bộ nhớ).

@@ -1,11 +1,11 @@
-package vn.edu.ptit.oop.nhom05.model;
+package vn.edu.ptit.oop.nhom03.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import vn.edu.ptit.oop.nhom05.service.DiscountStrategy; // chỉnh package theo bạn Diễm Quỳnh
+import vn.edu.ptit.oop.nhom03.service.DiscountStrategy; // chỉnh package theo bạn Diễm Quỳnh
 
 /**
  * Đơn hàng. KẾT HỢP (Composition): Order chứa danh sách OrderItem.

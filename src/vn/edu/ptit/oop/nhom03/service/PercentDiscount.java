@@ -1,6 +1,6 @@
-package vn.edu.ptit.oop.nhom05.service;
+package vn.edu.ptit.oop.nhom03.service;
 
-import vn.edu.ptit.oop.nhom05.model.Order;
+import vn.edu.ptit.oop.nhom03.model.Order;
 
 public class PercentDiscount implements DiscountStrategy {
     private double percentage;
