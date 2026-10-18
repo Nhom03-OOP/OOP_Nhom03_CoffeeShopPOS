@@ -1,4 +1,4 @@
-package vn.edu.ptit.oop.nhom05.ui;
+package vn.edu.ptit.oop.nhom03.ui;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
-import vn.edu.ptit.oop.nhom05.model.CafeTable;
+import vn.edu.ptit.oop.nhom03.model.CafeTable;
 
 /**
  * Giao diện Sơ đồ bàn (TablePanel) - file của Phát được nâng cấp để tích hợp.

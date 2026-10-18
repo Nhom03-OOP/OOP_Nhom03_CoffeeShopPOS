@@ -1,11 +1,11 @@
-package vn.edu.ptit.oop.nhom05.ui;
+package vn.edu.ptit.oop.nhom03.ui;
 
-import vn.edu.ptit.oop.nhom05.model.Category;
-import vn.edu.ptit.oop.nhom05.model.MenuItem;
-import vn.edu.ptit.oop.nhom05.repository.MenuRepository;
-import vn.edu.ptit.oop.nhom05.util.IconLoader;
-import vn.edu.ptit.oop.nhom05.util.MoneyFormat;
-import vn.edu.ptit.oop.nhom05.util.Theme;
+import vn.edu.ptit.oop.nhom03.model.Category;
+import vn.edu.ptit.oop.nhom03.model.MenuItem;
+import vn.edu.ptit.oop.nhom03.repository.MenuRepository;
+import vn.edu.ptit.oop.nhom03.util.IconLoader;
+import vn.edu.ptit.oop.nhom03.util.MoneyFormat;
+import vn.edu.ptit.oop.nhom03.util.Theme;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,18 +1,18 @@
-package vn.edu.ptit.oop.nhom05.ui;
+package vn.edu.ptit.oop.nhom03.ui;
 
-import vn.edu.ptit.oop.nhom05.common.BaseWindow;
-import vn.edu.ptit.oop.nhom05.exception.InvalidOrderException;
-import vn.edu.ptit.oop.nhom05.model.MenuItem;
-import vn.edu.ptit.oop.nhom05.model.Order;
-import vn.edu.ptit.oop.nhom05.model.OrderItem;
-import vn.edu.ptit.oop.nhom05.model.OrderStatus;
-import vn.edu.ptit.oop.nhom05.repository.InMemoryMenuRepository;
-import vn.edu.ptit.oop.nhom05.repository.InMemorySalesRepository;
-import vn.edu.ptit.oop.nhom05.repository.MenuRepository;
-import vn.edu.ptit.oop.nhom05.repository.SalesRepository;
-import vn.edu.ptit.oop.nhom05.service.*;
-import vn.edu.ptit.oop.nhom05.util.MoneyFormat;
-import vn.edu.ptit.oop.nhom05.util.Theme;
+import vn.edu.ptit.oop.nhom03.common.BaseWindow;
+import vn.edu.ptit.oop.nhom03.exception.InvalidOrderException;
+import vn.edu.ptit.oop.nhom03.model.MenuItem;
+import vn.edu.ptit.oop.nhom03.model.Order;
+import vn.edu.ptit.oop.nhom03.model.OrderItem;
+import vn.edu.ptit.oop.nhom03.model.OrderStatus;
+import vn.edu.ptit.oop.nhom03.repository.InMemoryMenuRepository;
+import vn.edu.ptit.oop.nhom03.repository.InMemorySalesRepository;
+import vn.edu.ptit.oop.nhom03.repository.MenuRepository;
+import vn.edu.ptit.oop.nhom03.repository.SalesRepository;
+import vn.edu.ptit.oop.nhom03.service.*;
+import vn.edu.ptit.oop.nhom03.util.MoneyFormat;
+import vn.edu.ptit.oop.nhom03.util.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -58,7 +58,7 @@ public class MainWindow extends BaseWindow {
     private Supplier<LocalTime> clockSupplier;
 
     public MainWindow() {
-        super("Quầy bán hàng Quán cà phê – Coffee Shop POS (PTIT Nhóm 05)", 1240, 740);
+        super("Quầy bán hàng Quán cà phê – Coffee Shop POS (PTIT Nhóm 03)", 1240, 740);
         // Sau khi constructor BaseWindow chạy xong và initUI() đã hoàn tất
         postInit();
     }
@@ -216,14 +216,14 @@ public class MainWindow extends BaseWindow {
      * Bổ sung các nút bấm vào Toolbar có sẵn từ BaseWindow.
      */
     private void customizeToolBar() {
-        addToolBarButton("/resources/icons/new.png", "Đơn mới (Ctrl+N)", e -> newOrder());
-        addToolBarButton("/resources/icons/remove.png", "Xóa món", e -> cartPanel.removeSelected());
-        addToolBarButton("/resources/icons/clear.png", "Xóa hết giỏ", e -> cartPanel.clearAll());
-        addToolBarButton("/resources/icons/checkout.png", "Thanh toán (Ctrl+P)", e -> cartPanel.checkout());
+        addToolButton("/resources/icons/new.png", "Đơn mới (Ctrl+N)", e -> newOrder());
+        addToolButton("/resources/icons/remove.png", "Xóa món", e -> cartPanel.removeSelected());
+        addToolButton("/resources/icons/clear.png", "Xóa hết giỏ", e -> cartPanel.clearAll());
+        addToolButton("/resources/icons/checkout.png", "Thanh toán (Ctrl+P)", e -> cartPanel.checkout());
         toolBar.addSeparator();
 
-        addToolBarButton("/resources/icons/table.png", "Sơ đồ bàn (Ctrl+T)", e -> openTableDialog());
-        addToolBarButton("/resources/icons/about.png", "Thông tin đề tài", e -> showAbout());
+        addToolButton("/resources/icons/table.png", "Sơ đồ bàn (Ctrl+T)", e -> openTableDialog());
+        addToolButton("/resources/icons/about.png", "Thông tin đề tài", e -> showAbout());
 
         toolBar.addSeparator();
 

@@ -1,12 +1,12 @@
-package vn.edu.ptit.oop.nhom05.ui;
+package vn.edu.ptit.oop.nhom03.ui;
 
-import vn.edu.ptit.oop.nhom05.model.Order;
-import vn.edu.ptit.oop.nhom05.model.OrderItem;
-import vn.edu.ptit.oop.nhom05.model.OrderStatus; // [MERGE]: Dùng enum OrderStatus
-import vn.edu.ptit.oop.nhom05.service.DiscountStrategy; // [MERGE]
-import vn.edu.ptit.oop.nhom05.service.NoDiscount; // [MERGE]
-import vn.edu.ptit.oop.nhom05.util.MoneyFormat; // [MERGE]: Thay formatVND cũ
-import vn.edu.ptit.oop.nhom05.util.Theme; // [MERGE]
+import vn.edu.ptit.oop.nhom03.model.Order;
+import vn.edu.ptit.oop.nhom03.model.OrderItem;
+import vn.edu.ptit.oop.nhom03.model.OrderStatus; // [MERGE]: Dùng enum OrderStatus
+import vn.edu.ptit.oop.nhom03.service.DiscountStrategy; // [MERGE]
+import vn.edu.ptit.oop.nhom03.service.NoDiscount; // [MERGE]
+import vn.edu.ptit.oop.nhom03.util.MoneyFormat; // [MERGE]: Thay formatVND cũ
+import vn.edu.ptit.oop.nhom03.util.Theme; // [MERGE]
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent; // [MERGE]

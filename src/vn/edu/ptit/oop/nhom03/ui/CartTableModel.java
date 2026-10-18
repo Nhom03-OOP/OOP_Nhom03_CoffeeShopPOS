@@ -1,8 +1,8 @@
-package vn.edu.ptit.oop.nhom05.ui;
+package vn.edu.ptit.oop.nhom03.ui;
 
-import vn.edu.ptit.oop.nhom05.model.Order;
-import vn.edu.ptit.oop.nhom05.model.OrderItem;
-import vn.edu.ptit.oop.nhom05.util.MoneyFormat;
+import vn.edu.ptit.oop.nhom03.model.Order;
+import vn.edu.ptit.oop.nhom03.model.OrderItem;
+import vn.edu.ptit.oop.nhom03.util.MoneyFormat;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
