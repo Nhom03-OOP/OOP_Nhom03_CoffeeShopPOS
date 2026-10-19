@@ -1,60 +1,51 @@
 package vn.edu.ptit.oop.nhom03.model;
 
-/**
- * Một dòng trong đơn hàng: món + số lượng + ghi chú.
- * Đóng gói: các trường private, setter có kiểm tra hợp lệ.
- */
+import vn.edu.ptit.oop.nhom03.exception.InvalidOrderException;
+
+/** Một dòng trong đơn hàng: món + số lượng + ghi chú. */
 public class OrderItem {
 
-    private final MenuItem menuItem;   // món nào (không đổi sau khi tạo)
-    private final int unitPrice;       // đơn giá chốt lúc gọi món (VND)
-    private int quantity;              // số lượng, luôn > 0
-    private String note;               // ghi chú, ví dụ "ít đường"
+    private final MenuItem menuItem;
+    private final int unitPrice;     // đơn giá chốt lúc gọi món
+    private int quantity;            // 1..99
+    private final String note;
+    private boolean locked;          // Order khóa khi đơn đã PAID/CANCELLED
 
     public OrderItem(MenuItem menuItem, int quantity, String note) {
         if (menuItem == null) {
-            throw new IllegalArgumentException("Món không được để trống");
+            throw new InvalidOrderException("Món không được để trống");
         }
         this.menuItem = menuItem;
-        // ĐA HÌNH: getPrice() của Drink/Food/Combo tự tính giá khác nhau.
-        // Chốt giá ngay lúc gọi để đơn cũ không đổi giá nếu sau này Drink bị setSize().
-        this.unitPrice = menuItem.getPrice();
-        setQuantity(quantity);   // dùng lại setter để cùng một luật kiểm tra
-        setNote(note);
+        this.unitPrice = menuItem.getPrice();   // đa hình
+        setQuantity(quantity);
+        this.note = (note == null) ? "" : note.trim();
     }
 
-    public MenuItem getMenuItem() {
-        return menuItem;
-    }
+    public MenuItem getMenuItem() { return menuItem; }
+    public int getUnitPrice()     { return unitPrice; }
+    public int getQuantity()      { return quantity; }
+    public String getNote()       { return note; }
+    public int getSubtotal()      { return unitPrice * quantity; }
 
-    public int getUnitPrice() {
-        return unitPrice;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    /** Package-private: chỉ Order được sửa, để đơn đã thanh toán không bị đổi từ bên ngoài. */
-    void setQuantity(int quantity) {
-        if (quantity <= 0) {
-            throw new IllegalArgumentException("Số lượng phải lớn hơn 0");
+    /** UI gọi trực tiếp nên public; đơn đã khóa thì không cho sửa. */
+    public void setQuantity(int quantity) {
+        if (locked) {
+            throw new InvalidOrderException("Đơn đã đóng, không thể sửa số lượng");
+        }
+        if (quantity < 1 || quantity > 99) {
+            throw new InvalidOrderException("Số lượng phải từ 1 đến 99");
         }
         this.quantity = quantity;
     }
 
-    public String getNote() {
-        return note;
-    }
+    /** Chỉ Order được khóa. */
+    void lock() { this.locked = true; }
 
-    /** Package-private, cùng lý do với setQuantity. */
-    void setNote(String note) {
-        this.note = (note == null) ? "" : note.trim();
-    }
-
-    /** Thành tiền của dòng này = đơn giá đã chốt x số lượng. */
-    public int getSubtotal() {
-        return unitPrice * quantity;
+    /** Cùng món + cùng size + cùng ghi chú thì được gộp dòng. */
+    boolean isSameLine(OrderItem o) {
+        return menuItem.getCode().equals(o.menuItem.getCode())
+                && menuItem.getSizeLabel().equals(o.menuItem.getSizeLabel())
+                && note.equals(o.note);
     }
 
     @Override

@@ -5,62 +5,68 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import vn.edu.ptit.oop.nhom03.service.DiscountStrategy; // chỉnh package theo bạn Diễm Quỳnh
+import vn.edu.ptit.oop.nhom03.exception.InvalidOrderException;
+import vn.edu.ptit.oop.nhom03.service.DiscountStrategy;
+import vn.edu.ptit.oop.nhom03.service.NoDiscount;
 
-/**
- * Đơn hàng. KẾT HỢP (Composition): Order chứa danh sách OrderItem.
- */
+/** Đơn hàng. Composition: Order chứa danh sách OrderItem. */
 public class Order {
 
+    private static int counter = 0;
+
     private final String id;
-    private final int tableNo;
+    private int tableNo;
     private final List<OrderItem> items = new ArrayList<>();
-    private OrderStatus status;
+    private OrderStatus status = OrderStatus.OPEN;
     private final LocalDateTime createdAt;
-    private DiscountStrategy discountStrategy;   // null = không giảm giá
+    private DiscountStrategy discountStrategy = new NoDiscount();   // mặc định, không để null
+
+    /** Tạo đơn mới, mã tự sinh; số bàn đặt sau bằng setTableNo. */
+    public Order() {
+        this.id = "HD" + String.format("%03d", ++counter);
+        this.createdAt = LocalDateTime.now();
+    }
+
+    /** UI gọi new Order(số bàn): mã đơn tự sinh. */
+    public Order(int tableNo) {
+        this();
+        setTableNo(tableNo);
+    }
 
     public Order(String id, int tableNo) {
         this(id, tableNo, LocalDateTime.now());
     }
 
-    /** Dùng khi cần giờ cụ thể: test Happy Hour 14h-16h, tạo dữ liệu mẫu cho biểu đồ theo giờ. */
+    /** Dùng khi cần giờ cụ thể (test Happy Hour, dữ liệu mẫu cho biểu đồ). */
     public Order(String id, int tableNo, LocalDateTime createdAt) {
         if (id == null || id.trim().isEmpty()) {
-            throw new IllegalArgumentException("Mã đơn không được để trống");
+            throw new InvalidOrderException("Mã đơn không được để trống");
         }
-        if (tableNo <= 0) {
-            throw new IllegalArgumentException("Số bàn phải lớn hơn 0");
-        }
+        setTableNo(tableNo);
         this.id = id;
-        this.tableNo = tableNo;
-        this.status = OrderStatus.NEW;
         this.createdAt = (createdAt == null) ? LocalDateTime.now() : createdAt;
     }
 
-    // ---------- Thao tác giỏ hàng ----------
+    // ---------- Giỏ hàng ----------
 
-    /**
-     * Thêm món. Nếu đã có cùng mã, cùng giá, cùng ghi chú thì cộng dồn số lượng.
-     * (Phải so cả giá vì cùng một Drink nhưng khác size thì cùng id mà khác giá.)
-     */
-    public void addItem(MenuItem menuItem, int quantity, String note) {
+    /** Gộp dòng nếu trùng món + size + ghi chú. */
+    public void addItem(OrderItem newItem) {
         checkEditable();
-        if (menuItem == null) {
-            throw new IllegalArgumentException("Món không được để trống");
+        if (newItem == null) {
+            throw new InvalidOrderException("Món không được để trống");
         }
-        if (quantity <= 0) {
-            throw new IllegalArgumentException("Số lượng phải lớn hơn 0");
-        }
-        String newNote = (note == null) ? "" : note.trim();
         for (OrderItem it : items) {
-            if (it.getMenuItem().getId().equals(menuItem.getId())
-                    && it.getUnitPrice() == menuItem.getPrice()
-                    && it.getNote().equals(newNote)) {
-                it.setQuantity(it.getQuantity() + quantity);
+            if (it.isSameLine(newItem)) {
+                it.setQuantity(it.getQuantity() + newItem.getQuantity());
                 return;
             }
         }
-        items.add(new OrderItem(menuItem, quantity, newNote));
+        items.add(newItem);
+    }
+
+    public void removeItem(OrderItem item) {
+        checkEditable();
+        items.remove(item);
     }
 
     /** Xóa dòng theo vị trí (dùng với dòng đang chọn trong JTable). */
@@ -69,81 +75,89 @@ public class Order {
         items.remove(index);
     }
 
-    /** Đổi số lượng của dòng thứ index (giao diện gọi hàm này thay vì sửa OrderItem trực tiếp). */
+    /** Đổi số lượng dòng thứ index; CartPanel nên gọi hàm này thay vì sửa OrderItem. */
     public void updateQuantity(int index, int quantity) {
         checkEditable();
         items.get(index).setQuantity(quantity);
     }
 
-    public void clearItems() {
+    public void clear() {
         checkEditable();
         items.clear();
     }
 
-    /** Chỉ cho sửa khi đơn còn ở trạng thái NEW. */
     private void checkEditable() {
-        if (status != OrderStatus.NEW) {
-            throw new IllegalStateException("Đơn đang ở trạng thái \"" + status.getLabel() + "\", không thể sửa");
+        if (status != OrderStatus.OPEN) {
+            throw new InvalidOrderException(
+                    "Đơn đang ở trạng thái \"" + status.getLabel() + "\", không thể sửa");
         }
     }
 
     // ---------- Tính tiền ----------
 
-    /** Tổng tiền hàng trước khuyến mãi. */
     public double getSubtotal() {
         double sum = 0;
-        for (OrderItem it : items) {
-            sum += it.getSubtotal();
-        }
+        for (OrderItem it : items) sum += it.getSubtotal();
         return sum;
     }
 
-    /** Số tiền được giảm (do DiscountStrategy tính). */
+    /** Số tiền được giảm (DiscountStrategy.apply trả số tiền giảm). */
     public double getDiscountAmount() {
-        return (discountStrategy == null) ? 0 : discountStrategy.apply(this);
+        return discountStrategy.apply(this);
     }
 
-    /** Tổng tiền khách phải trả = tiền hàng - giảm giá (không âm). */
     public double getTotal() {
-        return Math.max(0, getSubtotal() - getDiscountAmount());
+        return getSubtotal() - discountStrategy.apply(this);
     }
 
     // ---------- Trạng thái ----------
 
-    /** Đánh dấu đã thanh toán. Không cho thanh toán giỏ hàng rỗng. */
     public void markPaid() {
-        if (items.isEmpty()) {
-            throw new IllegalStateException("Giỏ hàng trống, không thể thanh toán");
-        }
         checkEditable();
+        if (items.isEmpty()) {
+            throw new InvalidOrderException("Giỏ hàng trống, không thể thanh toán");
+        }
         status = OrderStatus.PAID;
+        lockItems();
     }
 
     public void cancel() {
         checkEditable();
         status = OrderStatus.CANCELLED;
+        lockItems();
+    }
+
+    private void lockItems() {
+        for (OrderItem it : items) it.lock();
     }
 
     // ---------- Getter / setter ----------
 
-    public String getId() { return id; }
+    public String getId()                { return id; }
+    public int getTableNo()              { return tableNo; }
+    public OrderStatus getStatus()       { return status; }
+    public LocalDateTime getCreatedAt()  { return createdAt; }
+    public boolean isEmpty()             { return items.isEmpty(); }
 
-    public int getTableNo() { return tableNo; }
+    /** Giờ tạo đơn dạng chữ để hiện lên UI, ví dụ 19/10/2026 14:05. */
+    public String getFormattedCreatedAt() {
+        return createdAt.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+    }
 
-    public OrderStatus getStatus() { return status; }
+    public void setTableNo(int tableNo) {
+        if (tableNo <= 0) {
+            throw new InvalidOrderException("Số bàn phải lớn hơn 0");
+        }
+        this.tableNo = tableNo;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-
-    public boolean isEmpty() { return items.isEmpty(); }
-
-    /** ĐÓNG GÓI: trả về bản chỉ-đọc, bên ngoài không sửa trực tiếp list nội bộ. */
     public List<OrderItem> getItems() {
         return Collections.unmodifiableList(items);
     }
 
     public DiscountStrategy getDiscountStrategy() { return discountStrategy; }
 
-    public void setDiscountStrategy(DiscountStrategy discountStrategy) {
-        this.discountStrategy = discountStrategy;
+    public void setDiscountStrategy(DiscountStrategy s) {
+        this.discountStrategy = (s == null) ? new NoDiscount() : s;
     }
 }
