@@ -46,7 +46,10 @@ public class Drink extends MenuItem {
     public String getCategory() {
         return "Nước uống";
     }
-
+    @Override
+    public boolean hasSize() {
+        return true;
+    }
     @Override
     public String toString() {
         return getName() + " (Size " + size + ") - "
