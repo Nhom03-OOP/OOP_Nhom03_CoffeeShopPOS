@@ -20,6 +20,10 @@ public abstract class MenuItem{
     public abstract int getPrice();
 
     public abstract String getCategory();
+    
+    public boolean hasSize() {
+    return false;
+    }
 
     @Override
     public String toString() {
