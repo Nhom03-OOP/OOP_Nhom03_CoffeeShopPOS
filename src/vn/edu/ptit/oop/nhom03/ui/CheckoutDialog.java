@@ -33,7 +33,7 @@ public class CheckoutDialog extends JDialog {
     public CheckoutDialog(JFrame parent, Order order) {
         this(parent, order, Arrays.asList(
                 new NoDiscount(),
-                new PercentDiscount(0.1),
+                new PercentDiscount(10),
                 new MemberDiscount(),
                 new HappyHourDiscount()
         )); // [MERGE]
