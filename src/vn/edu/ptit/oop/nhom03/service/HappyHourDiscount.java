@@ -10,11 +10,28 @@ public class HappyHourDiscount implements DiscountStrategy {
     private static final LocalTime START_TIME = LocalTime.of(14, 0);
     private static final LocalTime END_TIME = LocalTime.of(16, 0);
 
+    private LocalTime customTime = null;
+
+    // 1. Constructor mặc định không tham số -> Phục vụ CheckoutDialog.java
+    public HappyHourDiscount() {
+    }
+
+    // 2. Constructor nhận tham số -> Phục vụ test case / giả lập giờ demo
+    public HappyHourDiscount(LocalTime customTime) {
+        this.customTime = customTime;
+    }
+
     @Override
     public double apply(Order order) {
-        if (order == null || order.getCreatedAt() == null) return 0.0;
+        if (order == null) return 0.0;
 
-        LocalTime orderTime = order.getCreatedAt().toLocalTime();
+        // Ưu tiên giờ giả lập customTime, nếu không có mới lấy giờ tạo đơn
+        LocalTime orderTime = customTime;
+        if (orderTime == null) {
+            if (order.getCreatedAt() == null) return 0.0;
+            orderTime = order.getCreatedAt().toLocalTime();
+        }
+
         if (orderTime.isBefore(START_TIME) || orderTime.isAfter(END_TIME)) {
             return 0.0;
         }
