@@ -2,6 +2,11 @@ package vn.edu.ptit.oop.nhom03.model;
 
 public class Drink extends MenuItem {
 
+    public Drink(String id, String name, int price) {
+        super(id, name);
+        this.basePrice = price;
+    }
+
     public enum Size {
         S, M, L
     }
