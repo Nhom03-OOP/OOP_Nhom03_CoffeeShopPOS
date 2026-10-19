@@ -5,28 +5,41 @@ import vn.edu.ptit.oop.nhom03.model.Order;
 import vn.edu.ptit.oop.nhom03.model.OrderItem;
 
 import java.time.LocalTime;
+import java.util.function.Supplier;
 
 public class HappyHourDiscount implements DiscountStrategy {
     private static final LocalTime START_TIME = LocalTime.of(14, 0);
     private static final LocalTime END_TIME = LocalTime.of(16, 0);
 
-    private LocalTime customTime = null;
+    private Supplier<LocalTime> timeProvider;
 
-    // 1. Constructor mặc định không tham số -> Phục vụ CheckoutDialog.java
+    // 1. Constructor mặc định (không tham số - Phục vụ CheckoutDialog.java)
     public HappyHourDiscount() {
+        this.timeProvider = null;
     }
 
-    // 2. Constructor nhận tham số -> Phục vụ test case / giả lập giờ demo
-    public HappyHourDiscount(LocalTime customTime) {
-        this.customTime = customTime;
+    // 2. Constructor nhận Supplier<LocalTime> 
+    public HappyHourDiscount(Supplier<LocalTime> timeProvider) {
+        this.timeProvider = timeProvider;
+    }
+
+    // 3. Constructor nhận LocalTime cố định (Hỗ trợ gọi test trực tiếp)
+    public HappyHourDiscount(LocalTime fixedTime) {
+        this.timeProvider = () -> fixedTime;
     }
 
     @Override
     public double apply(Order order) {
         if (order == null) return 0.0;
 
-        // Ưu tiên giờ giả lập customTime, nếu không có mới lấy giờ tạo đơn
-        LocalTime orderTime = customTime;
+        LocalTime orderTime = null;
+
+      
+        if (timeProvider != null) {
+            orderTime = timeProvider.get();
+        }
+
+        // Nếu Supplier không truyền thì lấy từ thời điểm tạo đơn
         if (orderTime == null) {
             if (order.getCreatedAt() == null) return 0.0;
             orderTime = order.getCreatedAt().toLocalTime();
