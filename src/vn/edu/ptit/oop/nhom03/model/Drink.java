@@ -1,31 +1,49 @@
+
 package vn.edu.ptit.oop.nhom03.model;
 
 public class Drink extends MenuItem {
 
-    public Drink(String id, String name, int price) {
-        super(id, name);
-        this.basePrice = price;
-    }
-
-    public enum Size {
-        S, M, L
-    }
-
     private final int basePrice;
-    private Size size;
+    private DrinkSize size;
 
-    public Drink(String id, String name, int basePrice, Size size) {
+    public Drink(String id, String name, int basePrice, DrinkSize size) {
         super(id, name);
+
+        if (basePrice < 0) {
+            throw new IllegalArgumentException(
+                    "Gia do uong khong duoc am");
+        }
+
+        if (size == null) {
+            throw new IllegalArgumentException(
+                    "Size khong duoc null");
+        }
+
         this.basePrice = basePrice;
         this.size = size;
     }
 
-    public Size getSize() {
+    public DrinkSize getSize() {
         return size;
     }
 
-    public void setSize(Size size) {
+    public void setSize(DrinkSize size) {
+        if (size == null) {
+            throw new IllegalArgumentException(
+                    "Size khong duoc null");
+        }
+
         this.size = size;
+    }
+
+    @Override
+    public boolean hasSize() {
+        return true;
+    }
+
+    @Override
+    public String getSizeLabel() {
+        return size.getSizeLabel();
     }
 
     @Override
@@ -46,13 +64,10 @@ public class Drink extends MenuItem {
     public String getCategory() {
         return "Nước uống";
     }
-    @Override
-    public boolean hasSize() {
-        return true;
-    }
+
     @Override
     public String toString() {
-        return getName() + " (Size " + size + ") - "
+        return getName() + " (Size " + size.getSizeLabel() + ") - "
                 + String.format("%,d", getPrice()) + " VND";
     }
 }
