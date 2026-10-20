@@ -24,6 +24,18 @@ public abstract class MenuItem{
     public boolean hasSize() {
     return false;
     }
+    
+    public String getSizeLabel() {
+        return "Không áp dụng";
+    }
+    
+    public String getCode() {
+        return id;
+    }
+    
+    public String getDescription() {
+        return name;
+    }
 
     @Override
     public String toString() {
