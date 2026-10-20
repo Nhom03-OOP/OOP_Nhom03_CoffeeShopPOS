@@ -64,4 +64,8 @@ public class HappyHourDiscount implements DiscountStrategy {
     public String getStrategyName() {
         return "Khung giờ vàng (14h-16h) - Giảm 20% đồ uống";
     }
+    @Override
+    public String toString() {
+        return getStrategyName();
+    }
 }
