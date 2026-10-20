@@ -12,6 +12,7 @@ public class NoDiscount implements DiscountStrategy {
     @Override
     public String getStrategyName() {
         return "Không giảm giá";
+    }
     @Override
     public String toString() {
         return getStrategyName();
