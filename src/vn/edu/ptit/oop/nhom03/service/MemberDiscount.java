@@ -42,4 +42,8 @@ public class MemberDiscount implements DiscountStrategy {
     public String getStrategyName() {
         return "Giảm giá Thành viên " + level;
     }
+    @Override
+    public String toString() {
+        return getStrategyName();
+    }
 }
