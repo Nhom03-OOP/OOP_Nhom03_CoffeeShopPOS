@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import vn.edu.ptit.oop.nhom03.model.Category;
-import vn.edu.ptit.oop.nhom03.model.Combo;
-import vn.edu.ptit.oop.nhom03.model.Drink;
-import vn.edu.ptit.oop.nhom03.model.Food;
-import vn.edu.ptit.oop.nhom03.model.MenuItem;
+import vn.edu.ptit.oop.nhom03.model.*;
 
 /** Menu lưu trong bộ nhớ, có sẵn dữ liệu mẫu tiếng Việt. */
 public class InMemoryMenuRepository implements MenuRepository {
@@ -17,14 +13,14 @@ public class InMemoryMenuRepository implements MenuRepository {
 
     public InMemoryMenuRepository() {
         // >= 6 đồ uống
-        Drink caPheSua = new Drink("D02", "Cà phê sữa", 25000, Drink.Size.M);
-        Drink traDao   = new Drink("D04", "Trà đào", 35000, Drink.Size.M);
-        items.add(new Drink("D01", "Cà phê đen", 20000, Drink.Size.M));
+        Drink caPheSua = new Drink("D02", "Cà phê sữa", 25000, DrinkSize.M);
+        Drink traDao   = new Drink("D04", "Trà đào", 35000, DrinkSize.M );
+        items.add(new Drink("D01", "Cà phê đen", 20000, DrinkSize.M));
         items.add(caPheSua);
-        items.add(new Drink("D03", "Bạc xỉu", 28000, Drink.Size.M));
+        items.add(new Drink("D03", "Bạc xỉu", 28000, DrinkSize.M));
         items.add(traDao);
-        items.add(new Drink("D05", "Trà sữa trân châu", 38000, Drink.Size.M));
-        items.add(new Drink("D06", "Trà vải", 35000, Drink.Size.M));
+        items.add(new Drink("D05", "Trà sữa trân châu", 38000, DrinkSize.M));
+        items.add(new Drink("D06", "Trà vải", 35000, DrinkSize.M));
 
         // >= 3 đồ ăn
         Food banhMi = new Food("F01", "Bánh mì", 25000);

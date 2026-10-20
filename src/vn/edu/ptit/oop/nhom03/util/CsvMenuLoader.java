@@ -1,5 +1,6 @@
 package vn.edu.ptit.oop.nhom03.util;
 
+import vn.edu.ptit.oop.nhom03.model.DrinkSize;
 import vn.edu.ptit.oop.nhom03.model.MenuItem;
 import vn.edu.ptit.oop.nhom03.model.Drink;
 import vn.edu.ptit.oop.nhom03.model.Food;
@@ -32,7 +33,7 @@ public class CsvMenuLoader {
 
                     MenuItem item = null;
                     if (type.equalsIgnoreCase("Drink")) {
-                        item = new Drink(id, name, price);
+                        item = new Drink(id, name, price, DrinkSize.M);
                     } else if (type.equalsIgnoreCase("Food")) {
                         item = new Food(id, name, price);
                     }

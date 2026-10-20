@@ -70,4 +70,8 @@ public class Drink extends MenuItem {
         return getName() + " (Size " + size.getSizeLabel() + ") - "
                 + String.format("%,d", getPrice()) + " VND";
     }
+
+    public Drink withSize(DrinkSize newSize) {
+        return new Drink(this.getId(), this.getName(), this.getPrice(), newSize);
+    }
 }

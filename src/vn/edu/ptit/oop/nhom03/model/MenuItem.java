@@ -8,6 +8,9 @@ public abstract class MenuItem{
         this.id = id;
         this.name = name;
     }
+    public MenuItem withSize(DrinkSize newSize) {
+        return this;
+    }
 
     public String getId() {
         return id;

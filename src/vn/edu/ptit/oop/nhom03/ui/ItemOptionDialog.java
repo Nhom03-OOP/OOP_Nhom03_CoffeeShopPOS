@@ -18,7 +18,8 @@ import java.awt.*;
  * - Đa hình: Dùng item.withSize(size).getPrice() để tính giá realtime mà không dùng instanceof.
  * - Xử lý ngoại lệ: Bắt InvalidOrderException và thông báo tiếng Việt qua JOptionPane.
  */
-public class ItemOptionDialog extends JDialog {
+public class
+ItemOptionDialog extends JDialog {
     private final MenuItem originalItem;
     private JComboBox<DrinkSize> cbxSize;
     private JSpinner spnQuantity;
@@ -50,7 +51,7 @@ public class ItemOptionDialog extends JDialog {
         lblTitle.setFont(new Font("Arial", Font.BOLD, 16));
         lblTitle.setForeground(Color.WHITE);
 
-        JLabel lblCategory = new JLabel("Danh mục: " + originalItem.getCategory().getLabel());
+        JLabel lblCategory = new JLabel("Danh mục: " + originalItem.getCategory());
         lblCategory.setFont(Theme.FONT_REGULAR);
         lblCategory.setForeground(new Color(230, 220, 210));
 

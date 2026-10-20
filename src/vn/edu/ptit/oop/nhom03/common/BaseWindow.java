@@ -28,6 +28,7 @@ public abstract class BaseWindow extends JFrame {
     /** Lớp con xây dựng vùng nội dung chính và thêm vào BorderLayout.CENTER. */
     protected abstract void initUI();
 
+
     /** Hook: lớp con override để hiển thị AboutDialog riêng của nhóm. */
     protected void showAbout() {
         JOptionPane.showMessageDialog(this, getTitle(), "About", JOptionPane.INFORMATION_MESSAGE);
