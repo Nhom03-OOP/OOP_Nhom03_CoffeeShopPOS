@@ -27,4 +27,8 @@ public class PercentDiscount implements DiscountStrategy {
     public String getStrategyName() {
         return "Giảm " + percentage + "%";
     }
+    @Override
+    public String toString() {
+        return getStrategyName();
+    }
 }
