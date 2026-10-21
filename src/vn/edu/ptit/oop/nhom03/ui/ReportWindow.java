@@ -2,7 +2,10 @@ package vn.edu.ptit.oop.nhom03.ui;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
@@ -120,14 +123,16 @@ public class ReportWindow extends JFrame {
             }
         };
 
-        for (Order order : orders) {
-            model.addRow(new Object[]{
-                    order.getId(),
-                    order.getCreatedAt().format(DATE_TIME_FMT),
-                    String.format("%,.0f", order.getTotal()),
-                    order.getStatus().getLabel()
-            });
-        }
+        List<Order> sorted = new ArrayList<>(orders);
+    Collections.reverse(sorted);
+    for (Order order : sorted) {
+        model.addRow(new Object[]{
+                order.getId(),
+                order.getCreatedAt().format(DATE_TIME_FMT),
+                String.format("%,.0f", order.getTotal()),
+                order.getStatus().getLabel()
+        });
+    }
 
         JTable table = new JTable(model);
         table.setRowHeight(25);
@@ -139,49 +144,53 @@ public class ReportWindow extends JFrame {
     }
 
     private JPanel createBarChartPanel(List<Order> orders) {
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        Map<String, Integer> itemCount = new HashMap<>();
+         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+    Map<String, Integer> itemCount = new HashMap<>();
 
-        for (Order o : orders) {
-            for (OrderItem oi : o.getItems()) {
-                String name = oi.getMenuItem().getName();
-                itemCount.put(name, itemCount.getOrDefault(name, 0) + oi.getQuantity());
-            }
+    for (Order o : orders) {
+        for (OrderItem oi : o.getItems()) {
+            String name = oi.getMenuItem().getName();
+            itemCount.put(name, itemCount.getOrDefault(name, 0) + oi.getQuantity());
         }
+    }
 
-        List<Map.Entry<String, Integer>> list = new ArrayList<>(itemCount.entrySet());
-        list.sort((a, b) -> b.getValue().compareTo(a.getValue()));
+    List<Map.Entry<String, Integer>> list = new ArrayList<>(itemCount.entrySet());
+    list.sort((a, b) -> b.getValue().compareTo(a.getValue()));
 
-        int limit = Math.min(5, list.size());
-        for (int i = 0; i < limit; i++) {
-            dataset.addValue(list.get(i).getValue(), "Số lượng", list.get(i).getKey());
-        }
+    int limit = Math.min(5, list.size());
+    for (int i = 0; i < limit; i++) {
+        dataset.addValue(list.get(i).getValue(), "Số lượng", list.get(i).getKey());
+    }
 
-        JFreeChart barChart = ChartFactory.createBarChart(
-                "TOP 5 MÓN BÁN CHẠY NHẤT", "Tên Món", "Số Lượng Đã Bán",
-                dataset, PlotOrientation.VERTICAL, false, true, false);
+    JFreeChart barChart = ChartFactory.createBarChart(
+            "TOP 5 MÓN BÁN CHẠY NHẤT", "Tên Món", "Số Lượng Đã Bán",
+            dataset, PlotOrientation.VERTICAL, false, true, false);
 
-        return new ChartPanel(barChart);
+    return new ChartPanel(barChart);
     }
 
     private JPanel createLineChartPanel(List<Order> orders) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        Map<Integer, Double> hourlyRevenue = new TreeMap<>();
+    double[] hourly = new double[24];
 
-        for (Order o : orders) {
-            int hour = o.getCreatedAt().getHour();
-            hourlyRevenue.put(hour, hourlyRevenue.getOrDefault(hour, 0.0) + o.getTotal());
-        }
+    for (Order o : orders) {
+        hourly[o.getCreatedAt().getHour()] += o.getTotal();
+    }
+    for (int h = 0; h < 24; h++) {
+        dataset.addValue(hourly[h], "Doanh thu", String.format("%02d:00", h));
+    }
 
-        for (Map.Entry<Integer, Double> entry : hourlyRevenue.entrySet()) {
-            dataset.addValue(entry.getValue(), "Doanh thu", entry.getKey() + ":00");
-        }
+    JFreeChart lineChart = ChartFactory.createLineChart(
+            "DOANH THU THEO GIỜ TRONG NGÀY", "Khung giờ", "Doanh Thu (VNĐ)",
+            dataset, PlotOrientation.VERTICAL, false, true, false);
 
-        JFreeChart lineChart = ChartFactory.createLineChart(
-                "DOANH THU THEO GIỜ TRONG NGÀY", "Khung giờ", "Doanh Thu (VNĐ)",
-                dataset, PlotOrientation.VERTICAL, false, true, false);
+    CategoryPlot plot = lineChart.getCategoryPlot();
+    LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot.getRenderer();
+    renderer.setDefaultShapesVisible(true);
+    renderer.setDefaultStroke(new BasicStroke(2.0f));
+    plot.getDomainAxis().setCategoryLabelPositions(CategoryLabelPositions.UP_45);
 
-        return new ChartPanel(lineChart);
+    return new ChartPanel(lineChart);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
