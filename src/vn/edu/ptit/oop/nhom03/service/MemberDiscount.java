@@ -1,4 +1,3 @@
-// TRUONG NGOC DIEM QUYNH - N24DCAT066
 package vn.edu.ptit.oop.nhom03.service;
 
 import vn.edu.ptit.oop.nhom03.model.Order;
