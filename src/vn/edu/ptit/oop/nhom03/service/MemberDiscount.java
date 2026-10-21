@@ -4,9 +4,9 @@ import vn.edu.ptit.oop.nhom03.model.Order;
 
 public class MemberDiscount implements DiscountStrategy {
     public enum MemberLevel {
-        SILVER(0.05),
-        GOLD(0.10),
-        DIAMOND(0.15);
+        SILVER(5),
+        GOLD(10),
+        DIAMOND(15);
 
         private final double rate;
         MemberLevel(double rate) { this.rate = rate; }
@@ -35,7 +35,7 @@ public class MemberDiscount implements DiscountStrategy {
     @Override
     public double apply(Order order) {
         if (order == null || level == null) return 0.0;
-        return order.getSubtotal() * level.getRate();
+        return order.getSubtotal() * (level.getPercentage() / 100.0);
     }
 
     @Override
