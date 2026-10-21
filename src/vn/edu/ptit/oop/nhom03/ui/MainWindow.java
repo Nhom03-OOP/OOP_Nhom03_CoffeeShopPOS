@@ -198,10 +198,7 @@ public class MainWindow extends BaseWindow {
         itemReport.addActionListener(e -> {
             // Phân hệ này do bạn Ánh (Thành viên 7) đảm nhiệm
             // TODO(REPORT-TEAMMATE): mở ReportWindow (JFrame, DISPOSE_ON_CLOSE)
-            JOptionPane.showMessageDialog(this,
-                    "Chức năng 'Báo cáo doanh thu & Biểu đồ' do thành viên khác phụ trách (Thành viên 7 - Ánh).\n" +
-                            "Hiện đã lưu " + salesRepository.findAll().size() + " hóa đơn vào SalesRepository.",
-                    "Báo cáo doanh thu", JOptionPane.INFORMATION_MESSAGE);
+            new ReportWindow(salesRepository).setVisible(true);
         });
 
         viewMenu.add(itemRefreshMenu);
