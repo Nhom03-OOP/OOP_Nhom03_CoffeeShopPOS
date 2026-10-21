@@ -5,14 +5,14 @@ import vn.edu.ptit.oop.nhom03.model.Order;
 
 public class PercentDiscount implements DiscountStrategy {
 
-    private double percentage; // Nhận số phần trăm (ví dụ: 10 nghĩa là 10%)
+    private double percentage; 
 
     public PercentDiscount() {
-        this.percentage = 10.0; // Mặc định giảm 10%
+        this.percentage = 10.0; 
     }
 
     public PercentDiscount(double percentage) {
-        // Nếu ai đó lỡ truyền 0.1 (dạng thập phân), tự chuyển thành 10%
+        
         if (percentage > 0 && percentage <= 1.0) {
             this.percentage = percentage * 100.0;
         } else {
