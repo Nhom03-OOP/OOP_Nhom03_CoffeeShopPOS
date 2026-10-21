@@ -42,7 +42,7 @@ public class MemberDiscount implements DiscountStrategy {
     @Override
     public double apply(Order order) {
         if (order == null || level == null) return 0.0;
-        return order.getSubtotal() * (level.getRate() / 100.0);
+        return order.getSubtotal() * (level.getPercentage()) / 100.0;
     }
 
     @Override
