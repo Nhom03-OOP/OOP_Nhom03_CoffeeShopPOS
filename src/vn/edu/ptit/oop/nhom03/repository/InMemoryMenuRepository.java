@@ -12,15 +12,16 @@ public class InMemoryMenuRepository implements MenuRepository {
     private final List<MenuItem> items = new ArrayList<>();
 
     public InMemoryMenuRepository() {
-        // >= 6 đồ uống
-        Drink caPheSua = new Drink("D02", "Cà phê sữa", 25000, DrinkSize.M);
-        Drink traDao   = new Drink("D04", "Trà đào", 35000, DrinkSize.M );
-        items.add(new Drink("D01", "Cà phê đen", 20000, DrinkSize.M));
+        // Khởi tạo đồ uống với DrinkSize.S để giá truyền vào đúng là giá gốc (Size S)
+        Drink caPheSua = new Drink("D02", "Cà phê sữa", 25000, DrinkSize.S);
+        Drink traDao   = new Drink("D04", "Trà đào", 35000, DrinkSize.S);
+
+        items.add(new Drink("D01", "Cà phê đen", 20000, DrinkSize.S));
         items.add(caPheSua);
-        items.add(new Drink("D03", "Bạc xỉu", 28000, DrinkSize.M));
+        items.add(new Drink("D03", "Bạc xỉu", 28000, DrinkSize.S));
         items.add(traDao);
-        items.add(new Drink("D05", "Trà sữa trân châu", 38000, DrinkSize.M));
-        items.add(new Drink("D06", "Trà vải", 35000, DrinkSize.M));
+        items.add(new Drink("D05", "Trà sữa trân châu", 38000, DrinkSize.S));
+        items.add(new Drink("D06", "Trà vải", 35000, DrinkSize.S));
 
         // >= 3 đồ ăn
         Food banhMi = new Food("F01", "Bánh mì", 25000);
@@ -54,8 +55,6 @@ public class InMemoryMenuRepository implements MenuRepository {
         return result;
     }
 
-    // Hiện MenuItem.getCategory() trả String nên so theo nhãn.
-    // Khi MenuItem đổi sang trả enum Category thì sửa thành: return m.getCategory() == c;
     private static boolean inCategory(MenuItem m, Category c) {
         return c.getLabel().equals(m.getCategory());
     }

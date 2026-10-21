@@ -1,21 +1,28 @@
+// TRUONG NGOC DIEM QUYNH - N24DCAT066
 package vn.edu.ptit.oop.nhom03.service;
 
 import vn.edu.ptit.oop.nhom03.model.Order;
 
 public class MemberDiscount implements DiscountStrategy {
-    public enum MemberLevel {
-        SILVER(5),
-        GOLD(10),
-        DIAMOND(15);
 
-        private final double rate;
-        MemberLevel(double rate) { this.rate = rate; }
-        public double getRate() { return rate; }
+    public enum MemberLevel {
+        SILVER(5),      // Giảm 5%
+        GOLD(10),       // Giảm 10%
+        DIAMOND(15);    // Giảm 15%
+
+        private final double percentage;
+
+        MemberLevel(double percentage) {
+            this.percentage = percentage;
+        }
+
+        public double getPercentage() {
+            return percentage;
+        }
     }
 
     private MemberLevel level;
 
-    // Constructor mặc định khớp với cách gọi new MemberDiscount() ở CheckoutDialog
     public MemberDiscount() {
         this.level = MemberLevel.SILVER;
     }
@@ -40,8 +47,9 @@ public class MemberDiscount implements DiscountStrategy {
 
     @Override
     public String getStrategyName() {
-        return "Giảm giá Thành viên " + level;
+        return "Giảm giá Thành viên " + level + " (" + (int) level.getPercentage() + "%)";
     }
+
     @Override
     public String toString() {
         return getStrategyName();
